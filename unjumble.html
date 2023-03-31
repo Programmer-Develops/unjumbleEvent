@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Event</title>
+    <style>
+      body {
+        background: url("oldpaper.jpg") repeat scroll 0;
+        background-repeat: no-repeat;
+        background-size: cover;
+        text-align: center;
+      }
+      h1 {
+        color: rgb(0, 0, 0);
+        font-size: 50px;
+        font-family:'Franklin Gothic Medium';
+        border:solid;
+        border-radius: 10px
+      }
+      p {
+        font-size: 25px ;
+      }
+      input {
+        border: solid;
+        border-radius: 15px;
+      }
+      button {
+        border: solid;
+        border-radius: 7.5px;
+      }
+      h2 {
+        font-size: 20;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Jumble the Unjumble</h1>
+    <div id="game"></div>
+    <script>
+      const words = ['Hanzo', 'Hermann', 'Temujin', 'Alexander', 'Nobunaga'];
+      const jumbledWords = jumbleWords(words);
+      let score = 0;
+      let currentWordIndex = 0;
+
+      function jumbleWords(words) {
+        return words.map(word => {
+          const jumbled = word.split('').sort(() => Math.random() - 0.5);
+          return {
+            original: word,
+            jumbled: jumbled.join('')
+          };
+        });
+      }
+
+      function showNextWord() {
+        const wordObj = jumbledWords[currentWordIndex];
+        const gameEl = document.getElementById('game');
+        gameEl.innerHTML = `
+          <div>
+            <p>⚜</p>
+            <p>which hero is this ? </p>
+            <h2>${wordObj.jumbled}</h2>
+            <input type="text" id="answer">
+            <button onclick="checkAnswer()">Submit</button>
+          </div>
+        `;
+      }
+
+      function checkAnswer() {
+        const answerEl = document.getElementById('answer');
+        const wordObj = jumbledWords[currentWordIndex];
+        if (answerEl.value.toLowerCase() === wordObj.original.toLowerCase()) {
+          score++;
+          alert('Correct!');
+        } else {
+          alert('Incorrect. Try again.');
+          return;
+        }
+        currentWordIndex++;
+        if (currentWordIndex < jumbledWords.length) {
+          showNextWord();
+        } else {
+          alert(`You won. Final score: ${score} , Please click screen shot of this and send to discord server event channel for participation in event`);
+        }
+      }
+
+      showNextWord();
+    </script>
+  </body>
+</html>
